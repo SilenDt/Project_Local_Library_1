@@ -63,7 +63,7 @@ function getMostPopularAuthors(books, authors) {
   books.map((book) => {
   let author = authors.find((author) => book.authorId == author.id)
   let name = author.name.first + " " + author.name.last;
-  let count = book.borrows.length
+  let count = book.borrows.length;
   let filtered = result.filter((item) => {
     return item.name === name;
   })

@@ -22,19 +22,26 @@ function sortAccountsByLastName(accounts) {
   function getTotalNumberOfBorrows(account, books) {
     const accId = account.id;
     let total = 0;
-    books.forEach(book => book.borrows.forEach(borrow => {if(accId === borrow.id)  total++}));
+    total = books.reduce((acc, book) => {
+      book.borrows.forEach(borrow => {if(accId === borrow.id)  acc+=1})
+      return acc;
+    }, 0);
     return total;
 }
   
 
-
+function getBooksBorrowed(books, account) {
+  let house = books.filter((book) => book.borrows.filter((item) => {if(item.id === account.id && item.returned === false) {
+    return true;
+  }
+  }).length > 0);
+  return house;
+}
 
 function getBooksPossessedByAccount(account, books, authors) {
 
   //forEach (book), filter through the book.borrows array. 
-  let house = books.filter((book) => book.borrows.filter((item) => {if(item.id === account.id && item.returned === false) {
-   return true}
-  }).length > 0);
+  let house = getBooksBorrowed(books, account)
   house.forEach((item) => item.author = authors.find((item2) => {
     return item2.id === item.authorId;
   }))
